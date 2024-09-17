@@ -40,11 +40,12 @@ public class GameController {
         }
 
     public GameState checkState(Game game){
-        return null;
+        return game.getGameState();
     }
 
     //which game you want to display
     public void display(Game game){
+         game.displayBoard();
 
     }
     //in which game you want to make the move-there are multiple games running

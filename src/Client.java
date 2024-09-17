@@ -1,7 +1,10 @@
 
 import controller.GameController;
-import model.Game;
-import model.GameState;
+import model.*;
+import strategies.RowWinningStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
 
@@ -24,14 +27,23 @@ public class Client {
     demands-he should not be attached to a single table)
     so send the game attribute in all methods of the class ex- checkState(Game game)      */
 
+    //to start the game i need to certain attributes
+        List<Player> players=new ArrayList<>();
+        players.add(new HumanPlayer(1 , "Arpit" ,new Symbol('O'), PlayerType.HUMAN ));
+        players.add(new BotPlayer(2 , "Botty", PlayerType.BOT, new Symbol('X') , BotDifficultyLevel.EASY));
 
         //Now no need to create a new game controller- just do as below
-        Game game=gameController.startGame();
+        Game game=gameController.startGame(
+                3,
+                players,
+                List.of(new RowWinningStrategy())
+        );
+        gameController.display(game);
         //Game game2=gameController.startgame();-we can use this refeence variable for below particular functions for that particular game
         //After this change pass the game variable in all methods
         while(gameController.checkState(game).equals(GameState.IN_PROGRESS)){
             //gameController.display();
-            gameController.display(game);
+        //    gameController.display(game);
             //gameController.makeMove();
             gameController.makeMove(game);
         }

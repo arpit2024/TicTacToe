@@ -82,6 +82,9 @@ public class Game {
         return new Builder();
     }
 
+    public void displayBoard() {
+        board.display();
+    }
 
     //----------Builder design pattern----------------------
 
@@ -118,6 +121,8 @@ public class Game {
             //here make a game constructor for - this-keyword in the above class
 
         }
+
+
         public void validate(){
         /*validate
         1) check the players count== dimension-1 */

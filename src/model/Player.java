@@ -7,6 +7,16 @@ public abstract class Player {
     private Symbol symbol;
     private PlayerType playerType;
 
+    //one common constructor for all  attributes
+
+
+    public Player(int id, String name, Symbol symbol, PlayerType playerType) {
+        this.id = id;
+        this.name = name;
+        this.symbol = symbol;
+        this.playerType = playerType;
+    }
+
     public int getId() {
         return id;
     }
