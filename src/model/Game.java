@@ -1,18 +1,19 @@
 package model;
 
+import strategies.WinningStrategy;
+
 import java.util.List;
 
 public class Game {
 
-    Board board;
-    List<Player> players;
-    Player winner;
-    int nextPlayerIndex;
-    List<Move> moves;
-    GameState gameState;
+    private Board board;
+    private List<Player> players;
+    private Player winner;
+    private int nextPlayerIndex;
+    private List<Move> moves;
+    private GameState gameState;
     //winning Strategies
-
-
+    private List<WinningStrategy> winningStrategies;
     public Board getBoard() {
         return board;
     }
