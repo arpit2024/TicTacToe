@@ -3,7 +3,10 @@ package model;
 import strategies.WinningStrategy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Game {
 
@@ -73,14 +76,18 @@ public class Game {
         this.gameState=gameState;
     }
 
+
+    //create the object of the builder
     public static Builder getBuilder(){
         return new Builder();
     }
 
-    //Builder design pattern
+
+    //----------Builder design pattern----------------------
 
     //no need of mentioning all attributes in builder-only mention the one we need from the client
     public static class Builder{
+    //since validation is required we can use Builder Pattern
         private int dimension;
         private List<Player> players;
         private List<WinningStrategy> winningStrategies;
@@ -104,15 +111,39 @@ public class Game {
 
 //Now Builder needs to have a build method- this will create a game object and return a game object
         public Game build(){
+            validate();//just call the method
+    //if all validation written here-it will be congested and also will brake SRP - so have a separate method
 
             return new Game(this);
-            //here make a game constructor for this-keyword
+            //here make a game constructor for - this-keyword in the above class
 
-            /* validate
-            1) check the players count== dimension-1
-            2) you can have only 1 bot in game
-            3) every player should have a separate symbol
-            since validation is required we can use Builder Pattern */
+        }
+        public void validate(){
+        /*validate
+        1) check the players count== dimension-1 */
+            if(players.size()!=dimension-1){
+                throw new RuntimeException("Invalid players count");
+            }
+
+        //2) you can have only 1 bot in game- check this by checking type count of eac player
+            int botCount=0;
+            for(Player player:players){
+                if(player.getPlayerType().equals(PlayerType.BOT)){
+                    botCount++;
+                }
+            }
+            if(botCount>1){
+                throw new RuntimeException("More than one bot is not allowed");
+            }
+
+        //3) every player should have a separate symbol
+            HashSet<Character> symbolSet=new HashSet<>();
+            for(Player player:players){
+                if(symbolSet.contains(player.getSymbol().getSym())){
+                    throw new RuntimeException("Multiple Players have the same Symbol");
+                }
+                symbolSet.add(player.getSymbol().getSym());
+            }
 
         }
 
