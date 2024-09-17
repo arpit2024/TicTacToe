@@ -8,6 +8,10 @@ public class Board {
 
     private List<List<Cell>> grid;
 
+    Board(int dimension){
+        this.size=dimension;
+    }
+
     public int getSize() {
         return size;
     }
