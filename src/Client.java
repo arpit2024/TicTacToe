@@ -45,7 +45,7 @@ public class Client {
             //gameController.display();
         //    gameController.display(game);
             //gameController.makeMove();
-            gameController.makeMove(game);
+            gameController.makeMove(game);//client says to gamecontroller hey i am passing you a game- object can you please make a move for this game object, now it goes to game controller class
         }
 /* every time a person has to do a move - when a move is done the data will come to me int the backend via API
 After that we will validate the move (iSvalid)- if the state is fine -we will send the state back again- otherwise the game will keep on continue

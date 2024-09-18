@@ -86,6 +86,79 @@ public class Game {
         board.display();
     }
 
+    //we didn't have any makemove method- so let's create it and write the business logic here and gamecontroller will call it
+    public void makeMove(){
+        //get the current player - this is from the list of players and index(term)
+        Player currentPlayer=players.get(nextPlayerIndex);
+        //once we got current player - you will tell this player that its your turn, can you make the move
+        System.out.println("It's "+ currentPlayer.getName() + " 's turn! Please make the move");
+        //now is game suppose make the move or player should make the move- player should do
+        //so let's have the remaining function in player class
+
+        //lets do the validation here(validation can also be done in Player class- explanation given)
+        Move move=currentPlayer.makeMove();
+        //validate this move through below validateMove method
+        if(!validateMove(move)){
+            System.out.println("Invalid Move! please try again.");
+        }
+        //if the move is valid then update the actual cell as right now we are in temporary cell
+        int row=move.getCell().getRow();
+        int col=move.getCell().getCol();
+
+        Cell cellToChange= board.getGrid().get(row).get(col);
+        //2 parameters we need to update when we are making the move- cellstate & Symbol
+        cellToChange.setCellState(CellState.FILLED);
+        cellToChange.setSymbol(currentPlayer.getSymbol());//cell has been updated, now update the current move
+
+        move.setCell(cellToChange);
+        move.setPlayer(currentPlayer);//we can make sure if the player added properly
+        moves.add(move);//add this correct move to the moves list so that undo can work fine
+
+        //from line 108-115 the cell is update in the sense board is updated\\- as board contain cell
+
+        //After this we need to update nextPlayer index
+        nextPlayerIndex++;
+        nextPlayerIndex %= board.getSize();//we need to modulo here as when the last person turn is completed we need to come back to zero /0th player
+
+        //we need to confirm if there is a winner/change in game state, after each move, so write a winner check function
+        if(checkWinner(move)){//if winner is present then set the game state
+            setWinner(currentPlayer);
+            setGameState(GameState.SUCCESS);//set the game state
+        }
+        //if all the moves are done then set the game state as draw
+        else if(moves.size() == board.getSize() * board.getSize()){
+            setWinner(null);
+            setGameState(GameState.DRAW);
+        }
+        //otherwise let's continue the game
+    }
+
+    public boolean checkWinner(Move move){
+        //we might have multiple ways of winning- so check each way
+        for(winningStrategies strategy: winningStrategies){
+            if()
+        }
+        int row=move.getCell().getRow();
+    }
+
+    //what we need to validate-
+    public boolean validateMove(Move move){
+
+        int row=move.getCell().getRow();
+        int col=move.getCell().getCol();
+        // 1) check if row/col is not out of the board boundary-
+        if(row<0 || row> board.getSize()-1 || col<0 || col> board.getSize()-1){
+            return false;
+        }
+        /* 2) cell isn't occupied before the move
+        from the board i have got grid of particular row and column-i will check if it is empty- if true then the move is valid
+        if false then the grid was not empty before & the move is incorrect */
+        return board.getGrid().get(row).get(col).equals(CellState.EMPTY);
+
+    }
+
+
+
     //----------Builder design pattern----------------------
 
     //no need of mentioning all attributes in builder-only mention the one we need from the client

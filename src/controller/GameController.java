@@ -24,12 +24,12 @@ public class GameController {
                 List<WinningStrategy>  winningStrategies
         ){
         /* before starting game/creating the game object we should validate first
-        1) check the players count== dimension-1
+        1) check the players count == dimension-1
         2) you can have only 1 bot in game
         3) every player should have a separate symbol
         since validation is required we can use Builder Pattern */
 
-            //return new Game();-we will not be creating the game object here- instead
+            //return new Game();-we will not be creating the game object here-instead
             return Game
                     .getBuilder()
                     .setDimension(dimension)
@@ -50,6 +50,8 @@ public class GameController {
     }
     //in which game you want to make the move-there are multiple games running
     public void makeMove(Game game){
+        //game controller say it can do the task-but when makeMove method can be called-but business logic is not my forte-
+        // so it asks create a method in game class and i will call it
 
     }
 
