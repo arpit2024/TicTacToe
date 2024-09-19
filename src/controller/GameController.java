@@ -11,7 +11,7 @@ public class GameController {
 
 //we should take the Game input instead of fixing it- i.e-we are attaching game to the game controller(it will just take the
 //    demands-he should not be attached to a single table) so send the game attribute in all methods of the class ex- checkState(Game game)
-        Game game;//send in all methods
+        //Game game;//send in all methods
 //    public void startGame(){
 //        game=new Game();
 //    }
@@ -52,12 +52,12 @@ public class GameController {
     public void makeMove(Game game){
         //game controller say it can do the task-but when makeMove method can be called-but business logic is not my forte-
         // so it asks create a method in game class and i will call it
-
+        game.makeMove();
     }
 
     //which game winner you want to check
     public Player getWinner(Game game){
-        return null;
+        return game.getWinner();
     }
 
     public void undo(Game game){

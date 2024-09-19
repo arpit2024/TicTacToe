@@ -2,9 +2,9 @@ package strategies;
 
 
 
-public class DiagonalWinStrategy implements WinningStrategy {
+public class DiagonalWinStrategy  {
 
-            @Override
+
             public void checkWinner() {
 
             }

@@ -19,7 +19,7 @@ public class Game {
     //winning Strategies
     private List<WinningStrategy> winningStrategies;
 
-    //private Game Constructor- will be expecting a builder object
+    //private Game Constructor - will be expecting a builder object
     private Game(Builder builder){
         board=new Board(builder.dimension);
         players=builder.players;
@@ -86,27 +86,30 @@ public class Game {
         board.display();
     }
 
-    //we didn't have any makemove method- so let's create it and write the business logic here and gamecontroller will call it
+    //we didn't have any makemove method -so let's create it and write the business logic here, and game-controller will call it
     public void makeMove(){
-        //get the current player - this is from the list of players and index(term)
+    //get the current player - this is from the list of players and index(term)
         Player currentPlayer=players.get(nextPlayerIndex);
-        //once we got current player - you will tell this player that its your turn, can you make the move
-        System.out.println("It's "+ currentPlayer.getName() + " 's turn! Please make the move");
-        //now is game suppose make the move or player should make the move- player should do
-        //so let's have the remaining function in player class
 
-        //lets do the validation here(validation can also be done in Player class- explanation given)
-        Move move=currentPlayer.makeMove();
-        //validate this move through below validateMove method
+    //once we got current player - you will tell this player that it's your turn, can you make the move
+        System.out.println("It's "+ currentPlayer.getName() + " 's turn! Please make the move");
+
+    //now is game supposes make the move or player should make the move-player should do
+    //so let's have the remaining function in player class
+
+    //let's do the validation here (validation can also be done in Player class - explanation given)
+        Move move=currentPlayer.makeMove(board);
+    //validate this move through below validateMove method
         if(!validateMove(move)){
             System.out.println("Invalid Move! please try again.");
+            return;
         }
-        //if the move is valid then update the actual cell as right now we are in temporary cell
+    //if the move is valid then update the actual cell as right now we are in temporary cell
         int row=move.getCell().getRow();
         int col=move.getCell().getCol();
 
         Cell cellToChange= board.getGrid().get(row).get(col);
-        //2 parameters we need to update when we are making the move- cellstate & Symbol
+    //2 parameters we need to update when we are making the move- cellstate & Symbol
         cellToChange.setCellState(CellState.FILLED);
         cellToChange.setSymbol(currentPlayer.getSymbol());//cell has been updated, now update the current move
 
@@ -114,31 +117,33 @@ public class Game {
         move.setPlayer(currentPlayer);//we can make sure if the player added properly
         moves.add(move);//add this correct move to the moves list so that undo can work fine
 
-        //from line 108-115 the cell is update in the sense board is updated\\- as board contain cell
+   //from line 108-115 the cell is update in the sense board is updated\\- as board contain cell
 
-        //After this we need to update nextPlayer index
+    //After this we need to update nextPlayer index
         nextPlayerIndex++;
-        nextPlayerIndex %= board.getSize();//we need to modulo here as when the last person turn is completed we need to come back to zero /0th player
+        nextPlayerIndex %= players.size();//we need to modulo here as when the last person turn is completed we need to come back to zero /0th player
 
-        //we need to confirm if there is a winner/change in game state, after each move, so write a winner check function
+    //we need to confirm if there is a winner/change in game state, after each move, so write a winner check function
         if(checkWinner(move)){//if winner is present then set the game state
             setWinner(currentPlayer);
             setGameState(GameState.SUCCESS);//set the game state
         }
-        //if all the moves are done then set the game state as draw
+    //if all the moves are done then set the game state as draw
         else if(moves.size() == board.getSize() * board.getSize()){
             setWinner(null);
             setGameState(GameState.DRAW);
         }
-        //otherwise let's continue the game
+    //otherwise let's continue the game
     }
 
     public boolean checkWinner(Move move){
-        //we might have multiple ways of winning- so check each way
-        for(winningStrategies strategy: winningStrategies){
-            if()
+   //we might have multiple ways of winning - so check each way
+        for(WinningStrategy strategy: winningStrategies){
+            if(strategy.checkWinner(board,move)){
+                return true;
+            }
         }
-        int row=move.getCell().getRow();
+        return false;
     }
 
     //what we need to validate-
@@ -150,10 +155,10 @@ public class Game {
         if(row<0 || row> board.getSize()-1 || col<0 || col> board.getSize()-1){
             return false;
         }
-        /* 2) cell isn't occupied before the move
-        from the board i have got grid of particular row and column-i will check if it is empty- if true then the move is valid
-        if false then the grid was not empty before & the move is incorrect */
-        return board.getGrid().get(row).get(col).equals(CellState.EMPTY);
+    /* 2) cell isn't occupied before the move
+    from the board i have got grid of particular row and column-i will check if it is empty- if true then the move is valid
+    if false then the grid was not empty before & the move is incorrect */
+        return board.getGrid().get(row).get(col).getCellState().equals(CellState.EMPTY);
 
     }
 
@@ -163,13 +168,13 @@ public class Game {
 
     //no need of mentioning all attributes in builder-only mention the one we need from the client
     public static class Builder{
-    //since validation is required we can use Builder Pattern
+    //since validation is required, we can use Builder Pattern
         private int dimension;
         private List<Player> players;
         private List<WinningStrategy> winningStrategies;
 
-        //Create only Setters
-//setters will also return the builder object-special thing in the setters to bring the chaining
+    //Create only Setters
+    //setters will also return the builder object-special thing in the setters to bring the chaining
         public Builder setDimension(int dimension) {
             this.dimension = dimension;
             return this;
@@ -182,10 +187,10 @@ public class Game {
             this.winningStrategies = winningStrategies;
             return this;
         }
-//Setters and Builders are ready- create the object of the builder
-//so now create a method in the game class called getBuilder method as static
+    //Setters and Builders are ready - create the object of the builder
+    //so now create a method in the game class called getBuilder method as static
 
-//Now Builder needs to have a build method- this will create a game object and return a game object
+    //Now Builder needs to have a build method - this will create a game object and return a game object
         public Game build(){
             validate();//just call the method
     //if all validation written here-it will be congested and also will brake SRP - so have a separate method
