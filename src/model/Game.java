@@ -176,6 +176,20 @@ public class Game {
             strategy.handleUndo(board,lastMove);
         }
 
+/*  After implenting above methods- we can successfull do undo- but here comes a issue
+    while we run the game and suppose a player wins- it displays winner and asks for undo
+    if the player gives Yes, it undo the step and still shows the same player winner-it's a bug */
+
+//if a player has won , wither dont allow undo / reverse the winner and game state
+        if(getWinner()!=null){
+            setGameState(GameState.IN_PROGRESS);//set the game state to in progress as we have undone the move
+            setWinner(null);
+            return;
+        }
+//        //so we need to update the game state and winner as null
+//        setGameState(GameState.IN_PROGRESS);//set the game state to in progress as we have undone the move
+//        setWinner(null);
+
     }
 
     //----------Builder design pattern----------------------
