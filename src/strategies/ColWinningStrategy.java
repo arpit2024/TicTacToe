@@ -39,5 +39,14 @@ public class ColWinningStrategy implements WinningStrategy {
         }
         return false;
     }
+    @Override
+    public void handleUndo(Board board, Move move) {
+        //if the move is undone, then we need to decrement the count of the symbol in the row
+        int col=move.getCell().getCol();//get
+        Character sym=move.getPlayer().getSymbol().getSym();
+
+        //go to hashmap, for the row hashmap, get the symbol and decrement the count
+        countMap.get(col).put(sym,countMap.get(col).get(sym)-1);
+    }
 
 }

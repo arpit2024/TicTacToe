@@ -6,9 +6,11 @@ import strategies.RowWinningStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Client {
 
+    static Scanner scanner=new Scanner(System.in);
     /* when the person comes to user interface , the person will press the play Button
     i might ask some details for him-through a form, those details will come to me through an API
     i create a game object by a controller and send back the game object- Now the game starts
@@ -55,6 +57,14 @@ public class Client {
             //gameController.display();
             gameController.display(game);
 
+            //Ask if the player want to undo
+            System.out.println("Do you want to undo the last move? [Y/N]");
+            String undoAnswer=scanner.nextLine();//take undo answer
+            if(undoAnswer.equals("y")){//if the person says Yes to Undo
+                gameController.undo(game);//undo the game
+                System.out.println("undo is Successfull !");
+                gameController.display(game);//display the game again after undo
+            }
         }
 /* every time a person has to do a move - when a move is done, the data will come to me int the backend via API
 After that we will validate the move (isValid)- if the state is fine -we will send the state back again-otherwise the game will keep on continue

@@ -33,42 +33,33 @@ public class Game {
     public Board getBoard() {
         return board;
     }
-
     public void setBoard(Board board) {
         this.board = board;
     }
-
     public List<Player> getPlayers() {
         return players;
     }
-
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
-
     public Player getWinner() {
         return winner;
     }
-
     public void setWinner(Player winner) {
         this.winner = winner;
     }
-
     public int getNextPlayerIndex() {
         return nextPlayerIndex;
     }
-
     public void setNextPlayerIndex(int nextPlayerIndex) {
         this.nextPlayerIndex = nextPlayerIndex;
     }
-
     public List<Move> getMoves(){
         return moves;
     }
     public void setMoves(List<Move> moves){
         this.moves=moves;
     }
-
     public GameState getGameState(){
         return gameState;
     }
@@ -81,7 +72,6 @@ public class Game {
     public static Builder getBuilder(){
         return new Builder();
     }
-
     public void displayBoard() {
         board.display();
     }
@@ -137,7 +127,7 @@ public class Game {
     }
 
     public boolean checkWinner(Move move){
-   //we might have multiple ways of winning - so check each way
+    //we might have multiple ways of winning - so check each way
         for(WinningStrategy strategy: winningStrategies){
             if(strategy.checkWinner(board,move)){
                 return true;
@@ -145,7 +135,6 @@ public class Game {
         }
         return false;
     }
-
     //what we need to validate-
     public boolean validateMove(Move move){
 
@@ -162,7 +151,32 @@ public class Game {
 
     }
 
+    public void undo(){
+    //whatever we did while making the move, we basically need to reverse that
+        if(moves.isEmpty()){
+            System.out.println("Nothing to undo!");
+        }
+    //if move present then remove the move from the list
+        Move lastMove=moves.get(moves.size()-1);
+        moves.remove(moves.size()-1);
 
+    //once removed from the list also update the cell of the move
+    //lastMove.setPlayer(null);
+        lastMove.getCell().setCellState(CellState.EMPTY);
+        lastMove.getCell().setSymbol(null);//since its set to null, in the rowWinningStrategy/columnWinningStrategy
+    // class while implementing handleUndo fn- i have taken player symbol not the cell symbol
+    //lastMove.setCell(null); as we cant get row value in rowwinningstrategy class as it is set to null
+
+        //whenever we are doing negative- we need to take the modulo so for (a-b)%n =(a-b+n)%n
+        nextPlayerIndex--;
+        nextPlayerIndex=(nextPlayerIndex+players.size())%players.size();//to update the next player index
+
+        //in the winning strategy we had updated the hashmap,so we also need to update the hashmap since the move is reversed
+        for(WinningStrategy strategy: winningStrategies){
+            strategy.handleUndo(board,lastMove);
+        }
+
+    }
 
     //----------Builder design pattern----------------------
 
@@ -199,7 +213,6 @@ public class Game {
             //here make a game constructor for - this-keyword in the above class
 
         }
-
 
         public void validate(){
         /*validate

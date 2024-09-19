@@ -39,4 +39,15 @@ import java.util.HashMap;
                 return false;
         }
 
-}
+        @Override
+        public void handleUndo(Board board, Move move) {
+            //if the move is undone, then we need to decrement the count of the symbol in the row
+            int row=move.getCell().getRow();//get
+            Character sym=move.getPlayer().getSymbol().getSym();
+
+            //go to hashmap, for the row hashmap, get the symbol and decrement the count
+            countMap.get(row).put(sym,countMap.get(row).get(sym)-1);
+        }
+
+
+    }
