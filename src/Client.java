@@ -2,6 +2,7 @@
 import controller.GameController;
 import model.*;
 import strategies.ColWinningStrategy;
+import strategies.DiagonalWinStrategy;
 import strategies.RowWinningStrategy;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class Client {
         Game game=gameController.startGame(
                 3,
                 players,
-                List.of(new RowWinningStrategy(), new ColWinningStrategy())
+                List.of(new RowWinningStrategy(), new ColWinningStrategy(), new DiagonalWinStrategy())
         );
 
         gameController.display(game);

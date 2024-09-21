@@ -98,7 +98,7 @@ public class Game {
         int row=move.getCell().getRow();
         int col=move.getCell().getCol();
 
-        Cell cellToChange= board.getGrid().get(row).get(col);
+        Cell cellToChange= board.getGrid().get(row).get(col);//here we get the cell from the board object
     //2 parameters we need to update when we are making the move- cellstate & Symbol
         cellToChange.setCellState(CellState.FILLED);
         cellToChange.setSymbol(currentPlayer.getSymbol());//cell has been updated, now update the current move
@@ -107,7 +107,7 @@ public class Game {
         move.setPlayer(currentPlayer);//we can make sure if the player added properly
         moves.add(move);//add this correct move to the moves list so that undo can work fine
 
-   //from line 108-115 the cell is update in the sense board is updated\\- as board contain cell
+    //from line 108-115 the cell is update in the sense board is updated\\- as board contain cell
 
     //After this we need to update nextPlayer index
         nextPlayerIndex++;
